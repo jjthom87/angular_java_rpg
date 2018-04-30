@@ -22,7 +22,7 @@ public class WebController {
 	
 	@RequestMapping(value = "/characters", method = RequestMethod.GET)
 	public @ResponseBody Iterable<Character> getAllCharacters() {
-		log.info("characters route hit"); 
+		log.info("/api/characters"); 
 		return characterRepository.findAll();
 	}
 }
