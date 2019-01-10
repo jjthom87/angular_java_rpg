@@ -1,31 +1,25 @@
 package com.angular.rpg.entity;
 
-import java.util.*;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.ElementCollection;
 
 import lombok.Data;
 
 @Entity
-@Table(name = "characters")
+@Table(name = "users")
 @Data
-public class Character {
+public class UserEntity {
+
 	@Id
 	@GeneratedValue
 	private Integer id;
 
 	@Column(unique = true)
-	private String name;
-
-	private String type;
-	private String img;
+	private String username;
 	
-	@ElementCollection
-	Map<String, String> collection;
-
+	@Column
+	private String password;
 }

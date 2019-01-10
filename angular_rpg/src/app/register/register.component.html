@@ -1,0 +1,26 @@
+<div>
+	<form #f="ngForm" (submit)="onSubmitRegisterForm($event, f)">
+		<mat-form-field>
+			<input 
+				matInput
+				ngModel
+				placeholder="Username"
+				name="username"
+				#username="ngModel"
+			>
+		</mat-form-field>
+		<br>
+		<mat-form-field>
+			<input 
+				matInput 
+				type="password" 
+				placeholder="Password"
+				ngModel
+				name="password"
+				#password="ngModel"
+			>
+		</mat-form-field>
+		<br><br>
+		<button mat-raised-button color="primary" type="submit">Register</button>
+	</form>
+</div>
