@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.angular.rpg.domain.LoggedInUserObj;
 import com.angular.rpg.domain.RegisterObj;
 import com.angular.rpg.entity.Character;
 import com.angular.rpg.entity.UserEntity;
@@ -46,6 +48,14 @@ public class WebController {
 		userEntity.setPassword(bCryptPasswordEncoder.encode(registerObj.getPassword()));
 		userRepository.save(userEntity);
 		return new ResponseEntity<UserEntity>(userEntity, HttpStatus.OK);
+	}
+
+	
+	@RequestMapping(value = "/getUser", method = RequestMethod.GET)
+	public @ResponseBody LoggedInUserObj getUser() {
+		LoggedInUserObj obj = new LoggedInUserObj();
+		obj.setUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		return obj;
 	}
 
 }
