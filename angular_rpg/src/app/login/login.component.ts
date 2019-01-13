@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import {Router} from "@angular/router"
+import { Router } from "@angular/router"
 
 
 @Component({
@@ -31,7 +31,6 @@ export class LoginComponent implements OnInit {
 
     }).subscribe(
       res => {
-        console.log(res)
         f.resetForm()
       },
       err => {
