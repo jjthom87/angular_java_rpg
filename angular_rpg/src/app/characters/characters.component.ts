@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-characters',
@@ -8,11 +9,12 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CharactersComponent implements OnInit {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
   characters = [];
   characterNames = [];
   characterClicked = false;
   characterSelected;
+  loggedInUser : string
 
   populateCharacters(characters){
   	characters.forEach((c) => this.characters.push(c));
@@ -30,8 +32,14 @@ export class CharactersComponent implements OnInit {
 
   ngOnInit(): void {
     this.http.get(`/api/characters`).subscribe((res:Response) => {
-    	console.log(res)
     	this.populateCharacters(res);
+    });
+    this.http.get(`/api/getUser`).subscribe((res:{username : string}) => {
+      if(res.username === "anonymousUser"){
+        this.router.navigate(['/login'])
+      } else {
+        this.loggedInUser = res.username
+      }
     });
   }
 
