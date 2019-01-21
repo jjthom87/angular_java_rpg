@@ -16,6 +16,8 @@ export class UserhomeComponent implements OnInit {
 
   constructor(private http: HttpClient, private router: Router) { }
   loggedInUser : String
+  userSelectedCharId : number;
+  userSelectedChar : string;
 
   onSubmitLogout($event, f: NgForm){
     $event.preventDefault();
@@ -31,13 +33,16 @@ export class UserhomeComponent implements OnInit {
   }
 
   ngOnInit() {
-  	this.http.get(`/api/getUser`).subscribe((res:LoginObj) => {
-      console.log(res.username)
-    	if(res.username === "anonymousUser"){
-    		this.router.navigate(['/login'])
-    	} else {
-    		this.loggedInUser = res.username
-    	}
+    this.http.get(`/api/getUser`).subscribe((res:{username : string, character_id : number, users_character : string}) => {
+      if(res.username === "anonymousUser"){
+        this.router.navigate(['/login']);
+      } else {
+        this.loggedInUser = res.username;
+        if(res.character_id){
+          this.userSelectedCharId = res.character_id;
+          this.userSelectedChar = res.users_character;
+        }
+      }
     });
   }
 

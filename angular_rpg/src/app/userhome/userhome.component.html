@@ -1,9 +1,16 @@
 <p>
   	Welcome {{loggedInUser}}
 </p>
-<p>
-	Please pick a character if you havent
-</p>
+<div [style.display]="!userSelectedCharId ? '' : 'none'">
+	<p>
+		Please pick a <a routerLink="/character">character</a>
+	</p>
+</div>
+<div [style.display]="userSelectedCharId ? '' : 'none'">
+	<p>
+		{{userSelectedChar}} has been picked
+	</p>
+</div>
 <div>
 	<form #f="ngForm" (submit)="onSubmitLogout($event, f)">
 		<button mat-raised-button color="warn" type="submit">Logout</button>

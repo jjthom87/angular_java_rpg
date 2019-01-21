@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.angular.rpg.domain.LoggedInUserObj;
@@ -41,6 +42,15 @@ public class WebController {
 		return characterRepository.findAll();
 	}
 	
+	@RequestMapping(value = "/addCharacterToUser", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<String> addCharacterToUser(@RequestParam int characterId) {
+		log.info("characterId: " + characterId + " being added for user");
+		UserEntity loggedInUser = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		loggedInUser.setCharacterId(characterId);
+		userRepository.save(loggedInUser);
+		return new ResponseEntity<String>("Character Added To User", HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<UserEntity> registerUser(@RequestBody RegisterObj registerObj) {
 		UserEntity userEntity = new UserEntity();
@@ -54,7 +64,10 @@ public class WebController {
 	@RequestMapping(value = "/getUser", method = RequestMethod.GET)
 	public @ResponseBody LoggedInUserObj getUser() {
 		LoggedInUserObj obj = new LoggedInUserObj();
-		obj.setUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		String loggedInUserName = SecurityContextHolder.getContext().getAuthentication().getName();
+		obj.setUsername(loggedInUserName);
+		obj.setCharacter_id(userRepository.findByUsername(loggedInUserName).getCharacterId());
+		obj.setUsers_character(characterRepository.findById(userRepository.findByUsername(loggedInUserName).getCharacterId()).getName());
 		return obj;
 	}
 

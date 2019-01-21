@@ -22,4 +22,7 @@ public class UserEntity {
 	
 	@Column
 	private String password;
+	
+	@Column()
+	private Integer characterId;
 }

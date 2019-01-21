@@ -1,18 +1,23 @@
-<div [style.display]="characterClicked ? 'none' : 'all'">	
-	<p>Choose Your Character</p>
-	<div 
-		*ngFor="let name of characterNames"
-		style="display: inline-flex;"
-	>
-		<div class="row">
-			<img 
-				(click)="onSelect($event, name.name)" 
-				style="width: 100px; height: 100px" 
-				[src]="name.img"
-			/>
-			<p>{{name.name}}</p>
+<div [style.display]="!userSelectedCharId ? 'none' : 'all'">	
+<!-- 	<div [style.display]="characterClicked ? 'none' : 'all'">	 -->
+		<p>Choose Your Character</p>
+		<div 
+			*ngFor="let name of characterNames"
+			style="display: inline-flex;"
+		>
+			<div class="row">
+				<img 
+					(click)="onSelect($event, name.name)" 
+					style="width: 100px; height: 100px" 
+					[src]="name.img"
+				/>
+				<p>{{name.name}}</p>
+			</div>
 		</div>
-	</div>
+<!-- 	</div> -->
+</div>
+<div [style.display]="userSelectedCharId ? '' : 'none'">	
+	<p>{{userSelectedChar}} Selected Already Douche Bag. Go Back <a routerLink="/userhome">Home</a></p>
 </div>
 <div [style.display]="characterClicked ? '' : 'none'">	
 	<p>Hello</p>

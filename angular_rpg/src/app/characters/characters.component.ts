@@ -14,7 +14,9 @@ export class CharactersComponent implements OnInit {
   characterNames = [];
   characterClicked = false;
   characterSelected;
-  loggedInUser : string
+  loggedInUser : string;
+  userSelectedCharId : number;
+  userSelectedChar : string;
 
   populateCharacters(characters){
   	characters.forEach((c) => this.characters.push(c));
@@ -26,6 +28,10 @@ export class CharactersComponent implements OnInit {
   	for(var i = 0; i < this.characters.length; i++){
   		if(this.characters[i].name === name){
   			this.characterSelected = this.characters[i];
+        this.http.get(`/api/addCharacterToUser?characterId=${this.characterSelected.id}`)
+          .subscribe((res:Response) => {
+            console.log(res)
+          })
   		}
   	}
   }
@@ -34,11 +40,15 @@ export class CharactersComponent implements OnInit {
     this.http.get(`/api/characters`).subscribe((res:Response) => {
     	this.populateCharacters(res);
     });
-    this.http.get(`/api/getUser`).subscribe((res:{username : string}) => {
+    this.http.get(`/api/getUser`).subscribe((res:{username : string, character_id : number, users_character : string}) => {
       if(res.username === "anonymousUser"){
-        this.router.navigate(['/login'])
+        this.router.navigate(['/login']);
       } else {
-        this.loggedInUser = res.username
+        this.loggedInUser = res.username;
+        if(res.character_id){
+          this.userSelectedCharId = res.character_id;
+          this.userSelectedChar = res.users_character;
+        }
       }
     });
   }
